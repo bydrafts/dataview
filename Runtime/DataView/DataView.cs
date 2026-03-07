@@ -17,6 +17,7 @@ namespace Drafts.DataView
         }
 
         public void CopyData(DataView other) => SetData(other.GetData());
+        public void DestroyTarget(GameObject go) => Destroy(go);
 
         [ContextMenu("Reset Data")]
         public void ResetData() => SetData(null);
