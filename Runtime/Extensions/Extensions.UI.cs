@@ -26,9 +26,9 @@ namespace Drafts.DataView
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void TrySetText(this TMP_Text view, object data)
+        public static void TrySetText<T>(this TMP_Text view, T data)
         {
-            if (view) view.text = data?.ToString();
+            if (view) view.text = data.ToString();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -38,7 +38,7 @@ namespace Drafts.DataView
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void TrySetText(this TMP_InputField view, object data)
+        public static void TrySetText<T>(this TMP_InputField view, T data)
         {
             if (view) view.text = data?.ToString();
         }
