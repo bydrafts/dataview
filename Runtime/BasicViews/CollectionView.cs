@@ -8,15 +8,14 @@ namespace Drafts.DataView
 {
     public class CollectionView : DataView<IEnumerable>
     {
-        [SerializeField] private DataView itemTemplate;
-        [SerializeField] private List<DataView> views = new();
-
+        [SerializeField] protected DataView itemTemplate;
+        [SerializeField] protected List<DataView> views = new();
         public IReadOnlyList<DataView> Views => views;
 
-        private bool? _isFixed2;
-        private bool IsFixed => _isFixed2 ??= views.Count > 0;
+        private bool? _isFixed;
+        protected bool IsFixed => _isFixed ??= views.Count > 0;
 
-        protected virtual void Awake()
+        private void Awake()
         {
             if (itemTemplate)
                 itemTemplate.gameObject.SetActive(false);
@@ -67,13 +66,13 @@ namespace Drafts.DataView
             }
         }
 
-        public void SetItem(int index, object data)
+        private void SetItem(int index, object data)
         {
             //TODO shift items
             views[index].SetData(data);
         }
 
-        public void AddItem(int index, object item)
+        private void AddItem(int index, object item)
         {
             var view = Instantiate(itemTemplate, itemTemplate.transform.parent);
             view.transform.SetSiblingIndex(index + 1); // 0 is the template
@@ -83,7 +82,7 @@ namespace Drafts.DataView
             views.Insert(index, view);
         }
 
-        public void RemoveItem(int index)
+        private void RemoveItem(int index)
         {
             Destroy(views[index].gameObject);
             views.RemoveAt(index);
@@ -97,7 +96,7 @@ namespace Drafts.DataView
                         RemoveItem(i);
         }
 
-        private void CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        protected virtual void CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
             {

@@ -7,6 +7,7 @@ namespace Drafts.DataView
     {
         public UnityEvent<object> onDataChanged;
         private object _data;
+        public int Index { get; set; }
 
         public virtual object GetData() => _data;
 
