@@ -4,6 +4,8 @@
     "references": [
         "Unity.Collections",
         "Unity.TextMeshPro",
+        "Unity.InputSystem",
+        "Unity.Localization",
         "Unity.Netcode.Runtime"
     ],
     "includePlatforms": [],
@@ -18,6 +20,11 @@
             "name": "com.unity.netcode.gameobjects",
             "expression": "0",
             "define": "USE_NETCODE_GAMEOBJECT"
+        },
+        {
+            "name": "com.unity.localization",
+            "expression": "0",
+            "define": "USE_LOCALIZATION"
         }
     ],
     "noEngineReferences": false
