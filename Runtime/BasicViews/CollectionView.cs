@@ -27,23 +27,26 @@ namespace Drafts.DataView
                 notifyCollection.CollectionChanged += CollectionChanged;
 
             if (IsFixed)
-            {
-                var items = Data.GetEnumerator();
-                for (var i = 0; i < views.Count; i++)
-                {
-                    var view = views[i];
-                    view.SetData(items.MoveNext() ? items.Current : null);
-                    view.GetComponent<IntView>()?.SetData(i);
-                }
-
-                if (items is IDisposable d) d.Dispose();
-            }
+                SetFixedItems();
             else
             {
                 var index = 0;
                 foreach (var item in Data)
                     AddItem(index++, item);
             }
+        }
+
+        private void SetFixedItems()
+        {
+            var items = Data.GetEnumerator();
+            for (var i = 0; i < views.Count; i++)
+            {
+                var view = views[i];
+                view.SetData(items.MoveNext() ? items.Current : null);
+                view.GetComponent<IntView>()?.SetData(i);
+            }
+
+            if (items is IDisposable d) d.Dispose();
         }
 
         protected override void Unsubscribe()
@@ -82,20 +85,6 @@ namespace Drafts.DataView
             views.Insert(index, view);
         }
 
-        private void RemoveItem(int index)
-        {
-            Destroy(views[index].gameObject);
-            views.RemoveAt(index);
-        }
-
-        private void RemoveItems(IList items)
-        {
-            foreach (var data in items)
-                for (var i = views.Count - 1; i >= 0; i--)
-                    if (views[i].GetData() == data)
-                        RemoveItem(i);
-        }
-
         protected virtual void CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
@@ -115,11 +104,15 @@ namespace Drafts.DataView
                     break;
 
                 case NotifyCollectionChangedAction.Remove:
-                    if (e.OldStartingIndex < 0)
-                        RemoveItems(e.OldItems);
+                    if (IsFixed)
+                        SetFixedItems();
                     else
                         for (var i = 0; i < e.OldItems.Count; i++)
-                            RemoveItem(e.OldStartingIndex + i);
+                        {
+                            var rIndex = e.OldStartingIndex + i;
+                            Destroy(views[rIndex].gameObject);
+                            views.RemoveAt(rIndex);
+                        }
                     break;
 
                 case NotifyCollectionChangedAction.Replace:
