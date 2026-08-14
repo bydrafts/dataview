@@ -62,11 +62,12 @@ namespace Drafts.Menu
         {
             if (!_draggingItem) return;
             onDrop.Invoke(_draggingItem, item);
-            SetDragActive(false, _draggingItem);
             item.callbacks.onDrop.Invoke(_draggingItem);
             
             if (_draggingItem.sounds)
                 _draggingItem.sounds.drag.Play();
+            
+            SetDragActive(false, _draggingItem);
         }
 
         private void SetDragActive(bool drag, MenuItem item)
