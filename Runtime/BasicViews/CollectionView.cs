@@ -87,6 +87,14 @@ namespace Drafts.DataView
 
         protected virtual void CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
+            if (!this)
+            {
+                Debug.LogError("should not happen");
+                if (Data is INotifyCollectionChanged notifyCollection)
+                    notifyCollection.CollectionChanged -= CollectionChanged;
+                return;
+            }
+            
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
