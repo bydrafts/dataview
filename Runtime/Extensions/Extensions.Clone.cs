@@ -8,9 +8,9 @@ namespace Drafts.DataView
     public static partial class DataViewExtensions
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Clone<T>(this T view) where T : Component
+        public static T Clone<T>(this T view, Transform parent = null) where T : Component
         {
-            var clone = Object.Instantiate(view, view.transform.parent);
+            var clone = Object.Instantiate(view, parent ?? view.transform.parent);
             clone.gameObject.SetActive(true);
             return clone;
         }
